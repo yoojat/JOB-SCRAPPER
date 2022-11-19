@@ -1,7 +1,6 @@
 from requests import get
 from bs4 import BeautifulSoup
 
-
 base_url = "https://weworkremotely.com/remote-jobs/search?utf8=%E2%9C%93&term="
 search_term = "python"
 # 다양한 검색을 위해 변수 선언
@@ -13,4 +12,6 @@ if response.status_code != 200:
   print("Can't request website.")
 else:
   soup = BeautifulSoup(response.text, 'html.parser')
-  print(soup.find_all('title')) # title 태그를 찾아줌
+  print(
+    soup.find_all('section', class_='jobs')
+  )  # job class를 가진 section을 찾는 것, class_라고 적는 것 주의(class라는 키워드를 이미 파이썬에서 사용중이기 때문)
