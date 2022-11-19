@@ -7,4 +7,4 @@ search_term = "python"
 response = get(f"{base_url}{search_term}")
 # f를 사용하면 문자열 안에 변수를 넣을 수 있음
 
-print(response)
+print(response.text)
