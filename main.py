@@ -11,6 +11,7 @@ response = get(f"{base_url}{search_term}")
 if response.status_code != 200:
   print("Can't request website.")
 else:
+  results = []
   soup = BeautifulSoup(response.text, 'html.parser')
   jobs = soup.find_all('section', class_='jobs')
   # job class를 가진 section을 찾는 것, class_라고 적는 것 주의(class라는 키워드를 이미 파이썬에서 사용중이기 때문)
@@ -24,10 +25,18 @@ else:
       anchors = post.find_all('a')
       anchor = anchors[1]  # 첫번째 것은 필요 없음
       link = anchor['href']  # 링크 따로 저장
-      company, kind, region = anchor.find_all(
-          'span', class_='company')  # 세개를 가지고 옴
+      company, kind, region = anchor.find_all('span',
+                                              class_='company')  # 세개를 가지고 옴
       # print(company, kind, region)
       title = anchor.find('span', class_='title')
-      print(company, kind, region, title)
-      print("//////////////////////////////////")
-      print("//////////////////////////////////")
+      # print(company, kind, region, title)
+      job_data = {
+        'company': company.string,
+        'region': region.string,
+        'position': title.string
+      }
+      results.append(job_data)
+      # print(company.string, kind.string, region.string, title.string)
+
+  for result in results:
+    print(result)
