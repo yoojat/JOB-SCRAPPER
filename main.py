@@ -19,6 +19,8 @@ browser.get("https://kr.indeed.com/jobs?q=python&limit=50")
 
 # print(browser.page_source)
 
+results = []
+
 soup = BeautifulSoup(browser.page_source, 'html.parser')
 
 job_list = soup.find("ul", class_="jobsearch-ResultsList")
@@ -28,6 +30,23 @@ for job in jobs:
   zone = job.find("div", class_="mosaic-zone")
   # job이 아닌 li를 찾기위한 과정
   if zone == None:
-    print("job li")
-  else:
-    print("mosai_li")
+    h2 = job.find("h2", class_="jobTitle")
+    # anchor = job.select("h2 a")
+    anchor = job.select_one("h2 a")
+    title = anchor['aria-label']
+    link = anchor['href']
+    # print(anchor)
+
+    company = job.find("span", class_="companyName")
+    location = job.find("div", class_="companyLocation")
+    # print(title, link)
+    job_data={
+      "link":f"https://kr.indeed.com{link}",
+      "company":company.string,
+      "location":location.string,
+      "position":title
+    }
+    print("////\n////")
+    results.append(job_data)
+for result in results:
+  print(result,"\n//////\n")
